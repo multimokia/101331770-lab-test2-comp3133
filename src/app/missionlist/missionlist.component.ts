@@ -1,10 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { Mission } from 'src/app/models/mission';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MissiondetailsComponent } from 'src/app/missiondetails/missiondetails.component';
+import { SpacexapiService } from 'src/app/spacexapi.service';
 
 @Component({
   selector: 'app-missionlist',
@@ -50,10 +49,10 @@ export class MissionlistComponent {
     'mission_patch_small'
   ];
 
-  constructor(private http: HttpClient, private dialogue: MatDialog) { }
+  constructor(private spacexapi: SpacexapiService, private dialogue: MatDialog) { }
 
   ngOnInit() {
-    this.http.get('https://api.spacexdata.com/v3/launches')
+    this.spacexapi.getMissions()
       .subscribe(
         (data: any) => {
           this.dataSource.data = data;

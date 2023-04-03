@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Mission } from 'src/app/models/mission';
+import { SpacexapiService } from 'src/app/spacexapi.service';
 
 @Component({
   selector: 'app-missiondetails',
@@ -49,7 +49,7 @@ export class MissiondetailsComponent {
   constructor(
     public dialogueRef: MatDialogRef<MissiondetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient
+    private spacexApi: SpacexapiService,
   ) {
     console.log(data);
     this.flight_number = data.flightNumber;
@@ -58,7 +58,7 @@ export class MissiondetailsComponent {
   ngOnInit() {
     console.log(this.flight_number);
 
-    this.http.get(`https://api.spacexdata.com/v3/launches/${this.flight_number}`)
+    this.spacexApi.getMission(this.flight_number)
       .subscribe(
         (data: any) => {
           this.flightData = data;

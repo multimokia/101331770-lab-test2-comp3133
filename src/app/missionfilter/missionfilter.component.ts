@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Mission } from 'src/app/models/mission';
+import { SpacexapiService } from 'src/app/spacexapi.service';
 
 @Component({
   selector: 'app-missionfilter',
@@ -65,12 +65,12 @@ export class MissionfilterComponent {
   @Input() data: MatTableDataSource<Mission>;
   @Output() dataChange = new EventEmitter<MatTableDataSource<Mission>>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private spacexApi: SpacexapiService) { }
 
   handleButtonClick(year: number) {
     console.log(year);
 
-    this.http.get(`https://api.spacexdata.com/v3/launches?launch_year=${year}`)
+    this.spacexApi.getMissionsByYear(year)
     .subscribe(
       (data: any) => {
         this.data.data = data;
